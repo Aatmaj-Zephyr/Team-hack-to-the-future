@@ -77,7 +77,7 @@ def known_bell_press():
 
 #create class for the main window
 def Turn_on_CCTV_fun(self):
-    sound = SoundLoader.load('Button-click-sound.mp3')
+    sound = SoundLoader.load('assets/Button-click-sound.mp3')
     sound.play()
     Camera_on_Layout(self)
 def Turn_off_CCTV_fun(self):
@@ -118,13 +118,13 @@ def hide_widget(wid, dohide=True):
         wid.height, wid.size_hint_y, wid.opacity, wid.disabled = 0, None, 0, True
 
 person_float_layout = FloatLayout()
-background_image = AsyncImage(source='wallpaper.jpeg', allow_stretch=True, keep_ratio=False)
+background_image = AsyncImage(source='../assets/wallpaper.jpeg', allow_stretch=True, keep_ratio=False)
 person_float_layout.add_widget(background_image)
 Bell = Label(text="There is someone at the door!", font_size=55, color="blue", size_hint=(.2, .2),
                      pos_hint={'center_x': 0.5, 'center_y': 0.85})
 person_float_layout.add_widget(Bell)
 
-background_image_box_accept = Image(source='images copy.jpeg', allow_stretch=True, keep_ratio=False,
+background_image_box_accept = Image(source='./assets/images copy.jpeg', allow_stretch=True, keep_ratio=False,
                          opacity=0.3, size_hint=(.8, .6), pos_hint={'center_x': 0.5, 'center_y': 0.5})
 person_float_layout.add_widget(background_image_box_accept)
 background_image_box_decline = Image(source='unknown.jpeg', allow_stretch=True, keep_ratio=False,
