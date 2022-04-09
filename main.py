@@ -77,12 +77,14 @@ def known_bell_press():
 
 #create class for the main window
 def Turn_on_CCTV_fun(self):
-    sound = SoundLoader.load('button-click_karaw.mp3')
+    sound = SoundLoader.load('Button-click-sound.mp3')
     sound.play()
     Camera_on_Layout(self)
-def Camera_off_Layout(self):
+def Turn_off_CCTV_fun(self):
     sound = SoundLoader.load('deny-unknown.mp3')
     sound.play()
+    Camera_off_Layout(self)
+def Camera_off_Layout(self):
     time.sleep(1)
 
     hide_widget(Turn_on_CCTV,False)
@@ -148,9 +150,9 @@ person_float_layout.add_widget(warning_Button)
 warning_label = Label(text="Warning!!", bold=True,font_size=40,color="red", size_hint=(.1, .1), pos_hint={'center_x': 0.5, 'center_y': 0.65})
 person_float_layout.add_widget(warning_label)
 
-Turn_on_CCTV = Button(text="Turn on CCTV", on_press=Camera_on_Layout,size_hint=(.5, .1),pos_hint={'center_x': 0.5, 'center_y': 0.2},background_color=(0,1,0,1))
+Turn_on_CCTV = Button(text="Turn on CCTV", on_press=Turn_on_CCTV_fun,size_hint=(.5, .1),pos_hint={'center_x': 0.5, 'center_y': 0.2},background_color=(0,1,0,1))
 person_float_layout.add_widget(Turn_on_CCTV)
-Turn_off_CCTV = Button(text="Turn off CCTV", on_press=Camera_off_Layout,size_hint=(.5, .1), pos_hint={'center_x': 0.5, 'center_y': 0.1},background_color=(1,0,0,1))
+Turn_off_CCTV = Button(text="Turn off CCTV", on_press=Turn_off_CCTV_fun,size_hint=(.5, .1), pos_hint={'center_x': 0.5, 'center_y': 0.1},background_color=(1,0,0,1))
 person_float_layout.add_widget(Turn_off_CCTV)
 #add the float layout to the main layout
 class DemoApp(App):
@@ -161,7 +163,8 @@ class DemoApp(App):
 
         return float
 Camera_off_Layout(None)
-
+sound = SoundLoader.load('app-opening.wav')
+sound.play()
 # run the app
 App = DemoApp()
 App.run()
