@@ -12,19 +12,17 @@ Whenever a person arrives at the front door,the cctv camera installed detects hi
 If its an acquaintance, then the app displays the name of the person and thus, guarantees that its a person the user is acquainted with. The user has an option to accept or deny the notification. If accepted,then the user can open the door and a notification is sent to the caretaker of the house with the details of the person.If its a stranger, then the user can simply deny the request.
 
 <b><i> Key Features of Application: </b></u>
-
-<ul>
-  <li> Safeguards the older demographic as well the young agegroup 
+1) **Safeguards the older demographic as well the young agegroup**
     
-        Senior citizens , around the 60+ age group experience mental problems and are vulnerable to thefts. This app would greatly benefit them to provide them safety in their own residence.
+Senior citizens , around the 60+ age group experience mental problems and are vulnerable to thefts. This app would greatly benefit them to provide them safety in their own residence.
         Younger children generally are brash,naive and quite impulsive and hence, prone to crimes such as kidnapping , thus this app would be a relief to parents!
+        
+2) **Promotes reusability of older smartphones,thus conserving resources.**
 
-  <li> Promotes reusability of older smartphones,thus conserving resources.  
+An older android compatible smartphone can be fixed on the doorframe and be used to run the application.  
     
-       An older android compatible smartphone can be fixed on the doorframe and be used to run the application.  
-    
-   <li> Has colourful and easy to use interface, thus enriching user experience to the fullest
+3) **Has colourful and easy to use interface, thus enriching user experience to the fullest**
      
-      Has minimalistic buttons and bright colors used to appeal to the users which appeal to the targeted demographic and vastly enhances the user experience.       
+Has minimalistic buttons and bright colors used to appeal to the users which appeal to the targeted demographic and vastly enhances the user experience.       
         
    
