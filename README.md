@@ -21,7 +21,7 @@ If its an acquaintance, then the app displays the name of the person and thus, g
 
   <li> Promotes reusability of older smartphones,thus conserving resources.  
     
-       <p>An older android compatible smartphone can be fixed on the doorframe and be used to run the application.  </p>
+       An older android compatible smartphone can be fixed on the doorframe and be used to run the application.  
     
    <li> Has colourful and easy to use interface, thus enriching user experience to the fullest
      
