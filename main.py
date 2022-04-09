@@ -18,8 +18,16 @@ def initiate_Normal_layout(float_layout):
     person_float_layout = FloatLayout()
     background_image = AsyncImage(source='wallpaper.jpeg', allow_stretch=True, keep_ratio=False)
     person_float_layout.add_widget(background_image)
-    background_image = Image(source ='Unknown wallpaper.jpeg',on_touch_down=press,allow_stretch=True, keep_ratio=False,opacity = 0.3,size_hint=(.8, .5),pos_hint={'center_x':0.5, 'center_y':0.6})
-    person_float_layout.add_widget(background_image)
+    Bell = Label(text="There is someone at the door!", font_size=55, color="blue", size_hint=(.2, .2),
+                         pos_hint={'center_x': 0.5, 'center_y': 0.85})
+    person_float_layout.add_widget(Bell)
+
+    background_image_box_accept = Image(source='images copy.jpeg', on_touch_down=press, allow_stretch=True, keep_ratio=False,
+                             opacity=0.3, size_hint=(.8, .6), pos_hint={'center_x': 0.5, 'center_y': 0.5})
+    person_float_layout.add_widget(background_image_box_accept)
+    background_image_box_decline = Image(source='unknown.jpeg', on_touch_down=press, allow_stretch=True, keep_ratio=False,
+                                 opacity=0.3, size_hint=(.8, .6), pos_hint={'center_x': 0.5, 'center_y': 0.5})
+    person_float_layout.add_widget(background_image_box_decline)
     person_label = Label(text="Unidentified Access!!",font_size=55,color="blue", size_hint=(.2, .2), pos_hint={'center_x':0.5, 'center_y':0.5})
     person_float_layout.add_widget(person_label)
    # accept_Button= Button(text="accept",size_hint=(.1,.1),pos_hint={'center_x':0.8, 'center_y':0.30},background_color=(0,1,0,1))
