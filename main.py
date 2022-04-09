@@ -1,4 +1,7 @@
 #import necessary imports
+import time
+
+from kivy.core.audio import SoundLoader
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -7,10 +10,11 @@ from kivy.app import App
 from kivy.uix.textinput import TextInput
 
 from kivy.config import Config
-
+import kivy.animation as animation
 Config.set('graphics', 'resizable', True)
 from kivy.uix.image import Image
 from kivy.uix.image import AsyncImage
+from kivy.animation import Animation
 
 
 def press(self):
@@ -18,12 +22,21 @@ def press(self):
 #global data
 #create a float layout
 
+def appear(widget,duration):
+    #animate widget
+    animation.Animation(opacity=1, duration=duration).start(widget)
 
 def decline(self):
     Camera_on_Layout(self)
 def accept(self):
+    sound = SoundLoader.load('accepted_karaw.mp3')
+    sound.play()
     Camera_on_Layout(self)
 def unknown_bell_press():
+    sound = SoundLoader.load('bell-known-person.mp3')
+    sound.play()
+    appear(warning_label,2)
+    appear(warning_Button,2)
     #add sounds here
     print("bell pressed")
     hide_widget(Turn_on_CCTV,True)
@@ -43,6 +56,7 @@ def unknown_bell_press():
 def set_person(person_label):
     person_label.text = "Raju Bhaji"
 def known_bell_press():
+
     #add sounds here
     print("bell pressed")
     hide_widget(Turn_off_CCTV, False)
@@ -62,8 +76,17 @@ def known_bell_press():
     set_person(person_label)
 
 #create class for the main window
+def Turn_on_CCTV_fun(self):
+    sound = SoundLoader.load('button-click_karaw.mp3')
+    sound.play()
+    Camera_on_Layout(self)
 def Camera_off_Layout(self):
+    sound = SoundLoader.load('deny-unknown.mp3')
+    sound.play()
+    time.sleep(1)
+
     hide_widget(Turn_on_CCTV,False)
+
     hide_widget(Turn_off_CCTV,True)
     hide_widget(accept_Button,True)
     hide_widget(decline_Button,True)
@@ -76,6 +99,7 @@ def Camera_off_Layout(self):
     hide_widget(background_image_box_decline,True)
     hide_widget(Bell,True)
 def Camera_on_Layout(self):
+    #wait for a second
     hide_widget(Turn_on_CCTV,True)
     hide_widget(Turn_off_CCTV,False)
     unknown_bell_press()
