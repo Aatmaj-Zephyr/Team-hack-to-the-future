@@ -1,4 +1,5 @@
 #import necessary imports
+import asyncio
 import time
 
 from kivy.core.audio import SoundLoader
@@ -29,13 +30,15 @@ def appear(widget,duration):
 def decline(self):
 
     Camera_on_Layout(self)
+    camera_on()
 def accept(self):
-    sound = SoundLoader.load('accepted_karaw.mp3')
-    sound.play()
     Camera_off_Layout(self)
+    sound = SoundLoader.load('test_app_accepted_karaw.mp3')
+    sound.play()
+    time.sleep(1)
     Turn_on_CCTV_fun(self)
 def unknown_bell_press():
-    sound = SoundLoader.load('bell-known-person.mp3')
+    sound = SoundLoader.load('test_app_bell-known-person.mp3')
     sound.play()
     appear(warning_label,2)
     appear(warning_Button,2)
@@ -65,6 +68,7 @@ def known_bell_press(name):
     #add sounds here
     print("bell pressed")
     hide_widget(Turn_off_CCTV, False)
+    hide_widget(Turn_on_CCTV, False)
     hide_widget(warning_Button, True)
     hide_widget(warning_label, True)
     hide_widget(accept_Button, False)
@@ -84,14 +88,26 @@ def camera_off():
   CCTV=False
 #create class for the main window
 def Turn_on_CCTV_fun(self):
-    sound = SoundLoader.load('Button-click-sound.mp3')
+    sound = SoundLoader.load('test_app_Button-click-sound.mp3')
     sound.play()
+    Camera_on_Layout(self)
+    while True:
+        value = detect()
 
-    camera_on()
+        if (value == "unknown"):
+            unknown_bell_press()
+            break
+        elif (value == "null"):
+            continue
+        else:
+            known_bell_press(value)
+            break
+
+
 
 
 def Turn_off_CCTV_fun(self):
-    sound = SoundLoader.load('deny-unknown.mp3')
+    sound = SoundLoader.load('test_app_deny-unknown.mp3')
     sound.play()
     Camera_off_Layout(self)
     camera_off()
@@ -129,6 +145,7 @@ def Camera_on_Layout(self):
     hide_widget(background_image_box_accept,True)
     hide_widget(background_image_box_decline,True)
     hide_widget(Bell,True)
+
 def blank():
     pass
 def hide_widget(wid, dohide=True):
@@ -171,6 +188,7 @@ person_float_layout.add_widget(decline_label)
 warning_Button = Image(source='icons8-warning-64.png',
                        pos_hint={'center_x': 0.5, 'center_y': 0.70})
 person_float_layout.add_widget(warning_Button)
+
 warning_label = Label(text="Warning!!", bold=True,font_size=40,color="red", size_hint=(.1, .1), pos_hint={'center_x': 0.5, 'center_y': 0.65})
 person_float_layout.add_widget(warning_label)
 
@@ -187,7 +205,7 @@ class DemoApp(App):
 
         return float
 Camera_off_Layout(None)
-sound = SoundLoader.load('app-opening.wav')
+sound = SoundLoader.load('test_app_app-opening.wav')
 sound.play()
 # run the app
 
@@ -219,8 +237,8 @@ for ref_id , embed_list in embed_dictt.items():
         known_face_encodings +=[my_embed]
         known_face_names += [ref_id]
 def camera_on():
-    while True:
-        time.sleep(1)
+   while True:
+
         value=detect()
 
         if(value=="unknown"):
