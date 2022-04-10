@@ -68,7 +68,7 @@ def known_bell_press(name):
     #add sounds here
     print("bell pressed")
     hide_widget(Turn_off_CCTV, False)
-    hide_widget(Turn_on_CCTV, False)
+    hide_widget(Turn_on_CCTV, True)
     hide_widget(warning_Button, True)
     hide_widget(warning_label, True)
     hide_widget(accept_Button, False)
@@ -90,8 +90,17 @@ def camera_off():
 def Turn_on_CCTV_fun(self):
     sound = SoundLoader.load('test_app_Button-click-sound.mp3')
     sound.play()
-    Camera_on_Layout(self)
     while True:
+        hide_widget(accept_Button, False)
+        hide_widget(decline_Button, True)
+        hide_widget(accept_label, True)
+        hide_widget(decline_label, True)
+        hide_widget(person_label, True)
+        hide_widget(warning_Button, True)
+        hide_widget(warning_label, True)
+        hide_widget(background_image_box_accept, True)
+        hide_widget(background_image_box_decline, True)
+        hide_widget(Bell, True)
         value = detect()
 
         if (value == "unknown"):
@@ -267,7 +276,7 @@ def detect():
     face_names = []
     process_this_frame = True
 
-    for i in range(0,20):
+    for i in range(0,10):
         try:
             ret, frame = video_capture.read()
 
@@ -298,7 +307,7 @@ def detect():
 
             process_this_frame = not process_this_frame
 
-
+            cv2.imshow('Video', frame)
             print(ref_dictt[name])
             detect_list.append(ref_dictt[name])
 
