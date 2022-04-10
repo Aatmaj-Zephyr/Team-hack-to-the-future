@@ -8,7 +8,7 @@ from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.app import App
 from kivy.uix.textinput import TextInput
-
+CCTV=False
 from kivy.config import Config
 import kivy.animation as animation
 Config.set('graphics', 'resizable', True)
@@ -27,6 +27,7 @@ def appear(widget,duration):
     animation.Animation(opacity=1, duration=duration).start(widget)
 
 def decline(self):
+
     Camera_on_Layout(self)
 def accept(self):
     sound = SoundLoader.load('accepted_karaw.mp3')
@@ -53,9 +54,10 @@ def unknown_bell_press():
     hide_widget(Bell,False)
     hide_widget(background_image,False)
     hide_widget(person_float_layout,False)
-def set_person(person_label):
-    person_label.text = "Raju Bhaji"
-def known_bell_press():
+    set_person(person_label,"Unidentified Access!!")
+def set_person(person_label,name):
+    person_label.text = name
+def known_bell_press(name):
 
     #add sounds here
     print("bell pressed")
@@ -69,22 +71,29 @@ def known_bell_press():
     hide_widget(person_label, False)
     hide_widget(background_image_box_accept, False)
     hide_widget(background_image_box_decline, True)
-
     hide_widget(Bell, False)
     hide_widget(background_image, False)
     hide_widget(person_float_layout, False)
-    set_person(person_label)
+    set_person(person_label,name)
 
+def camera_off():
+  CCTV=False
 #create class for the main window
 def Turn_on_CCTV_fun(self):
-    sound = SoundLoader.load('assets/Button-click-sound.mp3')
+    sound = SoundLoader.load('Button-click-sound.mp3')
     sound.play()
     Camera_on_Layout(self)
+    found=False
+    camera_on()
+
 def Turn_off_CCTV_fun(self):
     sound = SoundLoader.load('deny-unknown.mp3')
     sound.play()
     Camera_off_Layout(self)
+    camera_off()
+
 def Camera_off_Layout(self):
+    #wait for a second
     time.sleep(1)
 
     hide_widget(Turn_on_CCTV,False)
@@ -101,10 +110,21 @@ def Camera_off_Layout(self):
     hide_widget(background_image_box_decline,True)
     hide_widget(Bell,True)
 def Camera_on_Layout(self):
-    #wait for a second
     hide_widget(Turn_on_CCTV,True)
     hide_widget(Turn_off_CCTV,False)
-    unknown_bell_press()
+   # unknown_bell_press() test code
+
+    #hide all other widgets
+    hide_widget(accept_Button,True)
+    hide_widget(decline_Button,True)
+    hide_widget(accept_label,True)
+    hide_widget(decline_label,True)
+    hide_widget(person_label,True)
+    hide_widget(warning_Button,True)
+    hide_widget(warning_label,True)
+    hide_widget(background_image_box_accept,True)
+    hide_widget(background_image_box_decline,True)
+    hide_widget(Bell,True)
 def blank():
     pass
 def hide_widget(wid, dohide=True):
@@ -118,13 +138,13 @@ def hide_widget(wid, dohide=True):
         wid.height, wid.size_hint_y, wid.opacity, wid.disabled = 0, None, 0, True
 
 person_float_layout = FloatLayout()
-background_image = AsyncImage(source='../assets/wallpaper.jpeg', allow_stretch=True, keep_ratio=False)
+background_image = AsyncImage(source='wallpaper.jpeg', allow_stretch=True, keep_ratio=False)
 person_float_layout.add_widget(background_image)
 Bell = Label(text="There is someone at the door!", font_size=55, color="blue", size_hint=(.2, .2),
                      pos_hint={'center_x': 0.5, 'center_y': 0.85})
 person_float_layout.add_widget(Bell)
 
-background_image_box_accept = Image(source='./assets/images copy.jpeg', allow_stretch=True, keep_ratio=False,
+background_image_box_accept = Image(source='images copy.jpeg', allow_stretch=True, keep_ratio=False,
                          opacity=0.3, size_hint=(.8, .6), pos_hint={'center_x': 0.5, 'center_y': 0.5})
 person_float_layout.add_widget(background_image_box_accept)
 background_image_box_decline = Image(source='unknown.jpeg', allow_stretch=True, keep_ratio=False,
@@ -166,5 +186,119 @@ Camera_off_Layout(None)
 sound = SoundLoader.load('app-opening.wav')
 sound.play()
 # run the app
+
+
+import face_recognition
+import cv2
+import numpy as np
+import glob
+import pickle
+from kivy.app import App
+from kivy.lang import Builder
+from kivy.uix.boxlayout import BoxLayout
+import time
+from kivy.uix.camera import Camera
+
+
+f=open("ref_name.pkl" , "rb")
+ref_dictt=pickle.load(f)
+f.close()
+f=open("ref_embed.pkl","rb")
+embed_dictt=pickle.load(f)
+f.close()
+
+
+known_face_encodings = []
+known_face_names = []
+for ref_id , embed_list in embed_dictt.items():
+    for my_embed in embed_list:
+        known_face_encodings +=[my_embed]
+        known_face_names += [ref_id]
+def camera_on():
+    for i in range(0,10000):
+        value=detect()
+
+        if(value=="unknown"):
+            unknown_bell_press()
+            break
+        elif(value=="null"):
+            continue
+        else:
+            known_bell_press(value)
+            break
+def most_common_element(lst):
+    return max(set(lst), key=lst.count)
+def detect():
+    detect_list=[]
+    known_face_encodings = []
+    known_face_names = []
+    for ref_id, embed_list in embed_dictt.items():
+        for my_embed in embed_list:
+            known_face_encodings += [my_embed]
+            known_face_names += [ref_id]
+
+    video_capture = cv2.VideoCapture(0)
+
+    face_locations = []
+    face_encodings = []
+    face_names = []
+    process_this_frame = True
+
+    for i in range(0,20):
+        try:
+            ret, frame = video_capture.read()
+
+            small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+            rgb_small_frame = small_frame[:, :, ::-1]
+
+            if process_this_frame:
+
+                face_locations = face_recognition.face_locations(rgb_small_frame)
+                face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+
+                face_names = []
+                if (len(face_encodings) != 0):
+                    for face_encoding in face_encodings:
+
+                        matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+                        name = "Unknown"
+
+                        face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+                        best_match_index = np.argmin(face_distances)
+                        if matches[best_match_index]:
+                            name = known_face_names[best_match_index]
+                        face_names.append(name)
+                else:
+                    print("null")
+                    detect_list.append("null")
+                    continue
+
+            process_this_frame = not process_this_frame
+
+
+            print(ref_dictt[name])
+            detect_list.append(ref_dictt[name])
+
+        except:
+            print("unknown")
+            detect_list.append("unknown")
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    video_capture.release()
+    cv2.destroyAllWindows()
+    print()
+    most_value= most_common_element(detect_list)#most repeated value
+    print(most_value)
+    return most_value
+
 App = DemoApp()
 App.run()
+
+
+
+
+
+
+
