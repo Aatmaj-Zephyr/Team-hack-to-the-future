@@ -32,7 +32,8 @@ def decline(self):
 def accept(self):
     sound = SoundLoader.load('accepted_karaw.mp3')
     sound.play()
-    Camera_on_Layout(self)
+    Camera_off_Layout(self)
+    Turn_on_CCTV_fun(self)
 def unknown_bell_press():
     sound = SoundLoader.load('bell-known-person.mp3')
     sound.play()
@@ -55,6 +56,8 @@ def unknown_bell_press():
     hide_widget(background_image,False)
     hide_widget(person_float_layout,False)
     set_person(person_label,"Unidentified Access!!")
+    person_label.color="red"
+
 def set_person(person_label,name):
     person_label.text = name
 def known_bell_press(name):
@@ -75,6 +78,7 @@ def known_bell_press(name):
     hide_widget(background_image, False)
     hide_widget(person_float_layout, False)
     set_person(person_label,name)
+    person_label.color="blue"
 
 def camera_off():
   CCTV=False
@@ -82,9 +86,9 @@ def camera_off():
 def Turn_on_CCTV_fun(self):
     sound = SoundLoader.load('Button-click-sound.mp3')
     sound.play()
-    Camera_on_Layout(self)
-    found=False
+
     camera_on()
+
 
 def Turn_off_CCTV_fun(self):
     sound = SoundLoader.load('deny-unknown.mp3')
@@ -215,7 +219,8 @@ for ref_id , embed_list in embed_dictt.items():
         known_face_encodings +=[my_embed]
         known_face_names += [ref_id]
 def camera_on():
-    for i in range(0,10000):
+    while True:
+        time.sleep(1)
         value=detect()
 
         if(value=="unknown"):
@@ -290,7 +295,11 @@ def detect():
     cv2.destroyAllWindows()
     print()
     most_value= most_common_element(detect_list)#most repeated value
+
+    if(all(ele == detect_list[0] for ele in detect_list)):
+        print(detect_list[0])
     print(most_value)
+
     return most_value
 
 App = DemoApp()
