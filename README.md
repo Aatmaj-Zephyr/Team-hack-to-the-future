@@ -34,3 +34,6 @@ Has minimalistic buttons and bright colors used to appeal to the users which app
         <li> Buildozer </li>
     </ul>
    
+
+_______
+Machine learning model adapted from https://www.mygreatlearning.com/blog/face-recognition/
