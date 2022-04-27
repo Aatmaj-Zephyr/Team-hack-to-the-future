@@ -1,5 +1,5 @@
 # Vwatch!
-
+Check out the competete project submission on devfolio [here](https://devfolio.co/projects/vwatch-ca84)
 Stay alert, don't get hurt ! Now that the covid pandemic which rocked the world is coming to an end, things are returning to normalcy with the working sector being reopened again.
 However, home theft and robbery has been surging up to new records as the older generations as well as young kids being home alone,are getting more and more vulnerable. 
 
